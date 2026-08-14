@@ -4,13 +4,21 @@
 create table if not exists properties (
   id serial primary key,
   name text not null unique,
-  brand text not null check (brand in ('gamewatchers', 'porini'))
+  brand text not null check (brand in ('gamewatchers', 'porini')),
+  google_place_id text,
+  trustpilot_business_unit_id text
 );
 
 create table if not exists competitors (
   id serial primary key,
-  name text not null unique
+  name text not null unique,
+  google_place_id text
 );
+
+-- Columns added after the first migration — safe to re-run on an existing database.
+alter table properties add column if not exists google_place_id text;
+alter table properties add column if not exists trustpilot_business_unit_id text;
+alter table competitors add column if not exists google_place_id text;
 
 create table if not exists reviews (
   id serial primary key,
